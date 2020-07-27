@@ -1,28 +1,26 @@
 package pl.zalwi.start.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.zalwi.global.service.OrderService;
 
 @Controller
 public class HomeController {
 
-    @GetMapping("/album")
-    public String homePage(Model model, @RequestParam(required = false) String token) {
-        model.addAttribute("token", token);
-        return "album";
-    }
+    OrderService orderService;
 
-    @GetMapping("/navbar")
-    public String homePage2(Model model, @RequestParam(required = false) String token) {
-        model.addAttribute("token", token);
-        return "navbar";
+    @Autowired
+    public HomeController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @GetMapping("/start")
-    public String homeOwn(Model model, @RequestParam(required = false) String token) {
+    public String home(Model model, @RequestParam(required = false) String token) {
         model.addAttribute("token", token);
-        return "own_home";
+        model.addAttribute("orders", orderService.getMostPriorityServiceOrders());
+        return "home";
     }
 }

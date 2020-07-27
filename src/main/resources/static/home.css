@@ -20,9 +20,41 @@
   text-decoration: none;
 }
 
+.black-transparent {
+  background-color: rgba(0,0,0,0.8);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+.black-transparent a {
+  color: #999;
+  transition: ease-in-out color .15s;
+}
+.black-transparent a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
 /*
  * Dummy devices (replace them with your own or something else entirely!)
  */
+
+.block-links-shine a {
+  color: black;
+  transition: ease-in-out color .15s;
+  background-color: white;
+}
+.block-links-shine a:hover {
+  color: #fff;
+  text-decoration: none;
+  background: #f2f2f2;
+  border-radius: 21px 21px 21px 21px;
+}
+
+.custom-background {
+  background-color: lightgray;
+  border-radius: 21px 21px 21px 21px;
+}
+
 
 .product-device {
   position: absolute;
