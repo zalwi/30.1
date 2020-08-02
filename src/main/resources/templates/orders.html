@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments :: head">
+</head>
+<body>
+<header th:include="fragments :: header" class="fixed-top">
+</header>
+
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+    <div class="col-md-10 p-lg-1 mx-auto my-1">
+        <h1 class="display-4 font-weight-normal">Zlecenia z najwyższym priorytetem</h1>
+        <p class="lead font-weight-normal">Lista przyjętych pojazdów, których termin oddania jest nabliższy, bądz co
+            gorsze przekroczony!</p>
+
+        <br>
+        <form th:action="@{/list}" method="get">
+            <input type="text" placeholder="Producent" th:value="${filters.producer}" name="producer">
+            <input type="text" placeholder="Model" th:value="${filters.model}" name="model">
+            <input type="text" placeholder="Numer Rejestracyjny" th:value="${filters.registrationNumber}" name="registrationNumber">
+            <input type="text" placeholder="Sortowanie" th:value="${sortOption}" name="sort" hidden>
+            <input type="submit" value="Filtruj" class="btn btn-primary"/>
+        </form>
+        <br>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=id'}">
+                        Numer
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=producer'}">
+                        Producent
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=model'}">
+                        Model
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=registrationNumber'}">
+                        Numer rejestracyjny
+                    </a>
+                </th>
+                <th>
+                        Numer VIN
+                </th>
+                <th>
+                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=engineCapacity'}">
+                        Pojemność silnika
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=fuelType'}">
+                        Rodzaj paliwa
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=deadlineDate'}">
+                        Termin zakończenia
+                    </a>
+                </th>
+                <th>
+                        Osoba kontaktowa
+                </th>
+                <th>
+                        Zadania
+                </th>
+                <th>
+                        Akcje
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order: ${orderList}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.producer}"></td>
+                <td th:text="${order.model}"></td>
+                <td th:text="${order.registrationNumber}"></td>
+                <td th:text="${order.vinNumber}"></td>
+                <td th:text="|${order.engineCapacity} cm³|"></td>
+                <td th:text="${order.fuelType.description}"></td>
+                <td th:text="${order.getDateTimeInSqlDateTimeFormat(order.deadlineDate)}"></td>
+                <td th:text="|${order.contactPerson.firstName} ${order.contactPerson.lastName}|"></td>
+                <td text="link do zadań"></td>
+                <td text="linki akcji"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:if="${orderList.size()} == 0" th:text="'Brak wyników!'" style="color: darkgrey"></p>
+    <div class="row" th:fragment="pagination">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <nav aria-label="Pagination">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}" >
+                        <a class="page-link" th:href="@{/list(page=${pageNumber},
+                                                                    sort=${sortOption},
+                                                                    producer=${filters.producer},
+                                                                    registrationNumber=${filters.registrationNumber},
+                                                                    model=${filters.model})}" th:text=${pageNumber}>1</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+
+
+<footer th:include="fragments :: footer-links" class="container py-5">
+</footer>
+<footer th:include="fragments :: footer-fixed" class="black-transparent mt-auto py-1 fixed-bottom">
+</footer>
+<div th:include="fragments :: scripts">
+</div>
+</body>
+</html>

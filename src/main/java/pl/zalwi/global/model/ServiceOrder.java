@@ -3,6 +3,8 @@ package pl.zalwi.global.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class ServiceOrder {
 
     @Id
@@ -25,14 +28,18 @@ public class ServiceOrder {
     String model;
     String registrationNumber;
     String vinNumber;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     LocalDate firstDateRegistration;
     Integer engineCapacity;
 
     @Enumerated(EnumType.STRING)
     FuelType fuelType;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     LocalDateTime creationDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     LocalDateTime deadlineDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     LocalDateTime endDate;
 
     @OneToOne
@@ -69,14 +76,14 @@ public class ServiceOrder {
 
     public String calculateDelay() {
         if (deadlineDate.equals(null)) {
-            return "00h00s";
+            return "00h00m";
         }
         return getDifferenceBetweenDateTimeInHoursAndMinutes(deadlineDate, LocalDateTime.now());
     }
 
     public String calculateLeftTime() {
         if (endDate != null) {
-            return "00h00s";
+            return "00h00m";
         }
         return getDifferenceBetweenDateTimeInHoursAndMinutes(LocalDateTime.now(), deadlineDate);
     }
@@ -85,6 +92,6 @@ public class ServiceOrder {
         long minutes = ChronoUnit.MINUTES.between(firstDateTime, secondDateTime);
         long hours = ChronoUnit.HOURS.between(firstDateTime, secondDateTime);
         long minutesWithoutHours = minutes % 60;
-        return hours + "h" + minutesWithoutHours + "s";
+        return hours + "h" + minutesWithoutHours + "m";
     }
 }

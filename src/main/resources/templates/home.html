@@ -1,67 +1,16 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v4.0.1">
-    <title>Sprężynka</title>
-    <link rel="icon" href="/icon.svg">
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/product/">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="/home.css" rel="stylesheet">
+<head th:include="fragments :: head">
 </head>
 <body>
-<header class="fixed-top">
-    <div class="collapse black-transparent" id="navbarHeader">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-8 col-md-7 py-4">
-                    <h4 class="text-white">O systemie</h4>
-                    <p class="text-muted">To jest system obsługi serwisu pojazdów mechanicznych.
-                        Celem projektu jest kontrola nad zleceniami i przydzielanie zadan do poszczególnych
-                        pracowników<br><br>
-                        Kurs JavaStart, zadanie 30.1 Aplikacja z relacjami - Projekt własny</p>
-                </div>
-                <div class="col-sm-4 offset-md-1 py-4">
-                    <h4 class="text-white">Wybierz opcję</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Dodaj nowe zadanie</a></li>
-                        <li><a href="#">Lista zleceń</a></li>
-                        <li><a href="#">Lista zadań</a></li>
-                        <li><a href="#">Lista pracowników</a></li>
-                        <li><a href="#">Archiwum</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="navbar navbar-dark black-transparent shadow-sm">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="d-flex align-items-center">
-                <svg width="30" height="30" viewBox="-5 -5 24 24" class="bi bi-tools" fill="currentColor"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                          d="M0 1l1-1 3.081 2.2a1 1 0 0 1 .419.815v.07a1 1 0 0 0 .293.708L10.5 9.5l.914-.305a1 1 0 0 1 1.023.242l3.356 3.356a1 1 0 0 1 0 1.414l-1.586 1.586a1 1 0 0 1-1.414 0l-3.356-3.356a1 1 0 0 1-.242-1.023L9.5 10.5 3.793 4.793a1 1 0 0 0-.707-.293h-.071a1 1 0 0 1-.814-.419L0 1zm11.354 9.646a.5.5 0 0 0-.708.708l3 3a.5.5 0 0 0 .708-.708l-3-3z"/>
-                    <path fill-rule="evenodd"
-                          d="M15.898 2.223a3.003 3.003 0 0 1-3.679 3.674L5.878 12.15a3 3 0 1 1-2.027-2.027l6.252-6.341A3 3 0 0 1 13.778.1l-2.142 2.142L12 4l1.757.364 2.141-2.141zm-13.37 9.019L3.001 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z"/>
-                </svg>
-                <strong> AutoSerwis - Sprężynka</strong>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
-                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-    </div>
+<header th:include="fragments :: header" class="fixed-top">
 </header>
 
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
     <div class="col-md-10 p-lg-1 mx-auto my-1">
         <h1 class="display-4 font-weight-normal">Zlecenia z najwyższym priorytetem</h1>
-        <p class="lead font-weight-normal">Lista przyjętych pojazdów, których termin oddania jest nabliższy, bądz co gorsze przekroczony!</p>
+        <p class="lead font-weight-normal">Lista przyjętych pojazdów, których termin oddania jest nabliższy, bądz co
+            gorsze przekroczony!</p>
         <table class="table">
             <thead>
             <tr>
@@ -73,45 +22,53 @@
                 <th scope="col">Status</th>
             </tr>
             </thead>
-        <tbody>
-        <tr th:each="order: ${orders}">
-            <td>
-                <p th:text="${order.producer}">producer</p>
-            </td>
-            <td>
-                <p th:text="${order.model}">model</p>
-            </td>
-            <td>
-                <p th:text="${order.registrationNumber}">registrationNumber</p>
-            </td>
-            <td>
-                <p th:text="${order.contactPerson.firstName + ' ' + order.contactPerson.lastName}">firstName lastName</p>
-            </td>
-            <td>
-                <p th:text="${order.getDateTimeInSqlDateTimeFormat(order.deadlineDate)}">deadlineDate</p>
-            </td>
-            <td th:switch="${order.checkStatus()}">
-                <div th:case="${T(pl.zalwi.global.model.Status).INPROGRESS}" style="color: orange">
-                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-clock-history" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z"/>
-                        <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z"/>
-                        <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
-                    </svg>
-                    W trakcie<small th:text="${' (pozostało ' + order.calculateLeftTime() + ')'}"></small>
-                </div>
-                <div th:case="${T(pl.zalwi.global.model.Status).DELAYED}" style="color: red">
-                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-alarm" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M8 15A6 6 0 1 0 8 3a6 6 0 0 0 0 12zm0 1A7 7 0 1 0 8 2a7 7 0 0 0 0 14z"/>
-                        <path fill-rule="evenodd" d="M8 4.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.053.224l-1.5 3a.5.5 0 1 1-.894-.448L7.5 8.882V5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M.86 5.387A2.5 2.5 0 1 1 4.387 1.86 8.035 8.035 0 0 0 .86 5.387zM11.613 1.86a2.5 2.5 0 1 1 3.527 3.527 8.035 8.035 0 0 0-3.527-3.527z"/>
-                        <path fill-rule="evenodd" d="M11.646 14.146a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1-.708.708l-1-1a.5.5 0 0 1 0-.708zm-7.292 0a.5.5 0 0 0-.708 0l-1 1a.5.5 0 0 0 .708.708l1-1a.5.5 0 0 0 0-.708zM5.5.5A.5.5 0 0 1 6 0h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
-                        <path d="M7 1h2v2H7V1z"/>
-                    </svg>
-                    Opóźnione<small th:text="${' (' + order.calculateDelay() + ')'}"></small>
-                </div>
-            </td>
-        </tr>
-        </tbody>
+            <tbody>
+            <tr th:each="order: ${orders}">
+                <td>
+                    <p th:text="${order.producer}">producer</p>
+                </td>
+                <td>
+                    <p th:text="${order.model}">model</p>
+                </td>
+                <td>
+                    <p th:text="${order.registrationNumber}">registrationNumber</p>
+                </td>
+                <td>
+                    <p th:text="${order.contactPerson.firstName + ' ' + order.contactPerson.lastName}">firstName
+                        lastName</p>
+                </td>
+                <td>
+                    <p th:text="${order.getDateTimeInSqlDateTimeFormat(order.deadlineDate)}">deadlineDate</p>
+                </td>
+                <td th:switch="${order.checkStatus()}">
+                    <div th:case="${T(pl.zalwi.global.model.Status).INPROGRESS}" style="color: orange">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-clock-history"
+                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z"/>
+                            <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z"/>
+                            <path fill-rule="evenodd"
+                                  d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                        </svg>
+                        W trakcie<small th:text="${' (pozostało ' + order.calculateLeftTime() + ')'}"></small>
+                    </div>
+                    <div th:case="${T(pl.zalwi.global.model.Status).DELAYED}" style="color: red">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-alarm" fill="currentColor"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M8 15A6 6 0 1 0 8 3a6 6 0 0 0 0 12zm0 1A7 7 0 1 0 8 2a7 7 0 0 0 0 14z"/>
+                            <path fill-rule="evenodd"
+                                  d="M8 4.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.053.224l-1.5 3a.5.5 0 1 1-.894-.448L7.5 8.882V5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M.86 5.387A2.5 2.5 0 1 1 4.387 1.86 8.035 8.035 0 0 0 .86 5.387zM11.613 1.86a2.5 2.5 0 1 1 3.527 3.527 8.035 8.035 0 0 0-3.527-3.527z"/>
+                            <path fill-rule="evenodd"
+                                  d="M11.646 14.146a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1-.708.708l-1-1a.5.5 0 0 1 0-.708zm-7.292 0a.5.5 0 0 0-.708 0l-1 1a.5.5 0 0 0 .708.708l1-1a.5.5 0 0 0 0-.708zM5.5.5A.5.5 0 0 1 6 0h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                            <path d="M7 1h2v2H7V1z"/>
+                        </svg>
+                        Opóźnione<small th:text="${' (' + order.calculateDelay() + ')'}"></small>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
         </table>
         <p th:if="${orders.size()} == 0" th:text="'Brak wyników!'" style="color: darkgrey"></p>
         <a class="btn btn-outline-secondary" href="/list?sort=deadlineDate">Pełna lista zadań względem terminu</a>
@@ -155,7 +112,7 @@
             </div>
         </div>
     </a>
-    <a href="/list">
+    <a href="/archive">
         <div class="custom-background m-md-3 p-md-5 text-center overflow-hidden">
             <div class="my-3 p-3">
                 <h2 class="display-5">Archiwum</h2>
@@ -173,62 +130,11 @@
     </a>
 </div>
 
-<footer class="container py-5">
-    <div class="row">
-        <div class="col-12 col-md">
-            <svg width="30" height="30" viewBox="-5 -5 24 24" class="bi bi-tools" fill="currentColor"
-                 xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                      d="M0 1l1-1 3.081 2.2a1 1 0 0 1 .419.815v.07a1 1 0 0 0 .293.708L10.5 9.5l.914-.305a1 1 0 0 1 1.023.242l3.356 3.356a1 1 0 0 1 0 1.414l-1.586 1.586a1 1 0 0 1-1.414 0l-3.356-3.356a1 1 0 0 1-.242-1.023L9.5 10.5 3.793 4.793a1 1 0 0 0-.707-.293h-.071a1 1 0 0 1-.814-.419L0 1zm11.354 9.646a.5.5 0 0 0-.708.708l3 3a.5.5 0 0 0 .708-.708l-3-3z"/>
-                <path fill-rule="evenodd"
-                      d="M15.898 2.223a3.003 3.003 0 0 1-3.679 3.674L5.878 12.15a3 3 0 1 1-2.027-2.027l6.252-6.341A3 3 0 0 1 13.778.1l-2.142 2.142L12 4l1.757.364 2.141-2.141zm-13.37 9.019L3.001 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z"/>
-            </svg><br>
-            <small class="d-block mb-3 text-muted">&copy; Zalwi 2020</small>
-        </div>
-        <div class="col-6 col-md">
-            <h5>Bootstrap</h5>
-            <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="https://getbootstrap.com/docs/4.0/getting-started/introduction/">Dokumentacja</a></li>
-                <li><a class="text-muted" href="https://getbootstrap.com/docs/4.0/examples/">Przykłady użycia</a></li>
-                <li><a class="text-muted" href="https://icons.getbootstrap.com/">Ikony</a></li>
-            </ul>
-        </div>
-        <div class="col-6 col-md">
-            <h5>Technologie</h5>
-            <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="https://docs.oracle.com/en/java/">Java</a></li>
-                <li><a class="text-muted" href="https://spring.io/">Spring</a></li>
-                <li><a class="text-muted" href="https://hibernate.org/">Hibernate</a></li>
-            </ul>
-        </div>
-        <div class="col-6 col-md">
-            <h5>Kursy</h5>
-            <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="https://javastart.pl/bootcamp">JavaStart - Bootcamp</a></li>
-                <li><a class="text-muted" href="https://javastart.pl/oferta">JavaStart - Kursy online</a></li>
-            </ul>
-        </div>
-        <div class="col-6 col-md">
-            <h5>Autor</h5>
-            <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="https://github.com/zalwi">GitHub</a></li>
-            </ul>
-        </div>
-    </div>
+<footer th:include="fragments :: footer-links" class="container py-5">
 </footer>
-<footer class="black-transparent mt-auto py-1 fixed-bottom">
-    <div class="container">
-        <span class="text-muted">Zalogowany: Szef / Strona główna</span>
-    </div>
+<footer th:include="fragments :: footer-fixed" class="black-transparent mt-auto py-1 fixed-bottom">
 </footer>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
+<div th:include="fragments :: scripts">
+</div>
 </body>
 </html>
