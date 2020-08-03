@@ -45,10 +45,14 @@ public class ServiceOrder {
     @OneToOne
     ContactPerson contactPerson;
 
-    @OneToMany(mappedBy = "serviceOrder")
+    @OneToMany(mappedBy = "serviceOrder", cascade = CascadeType.PERSIST) // (mappedBy = "owner", cascade = CascadeType.PERSIST)
     List<OrderTask> orderTaskList;
 
     private Boolean finished;
+
+    public String basicInfo(){
+        return producer + " " + model + " - " + registrationNumber + "\n" + contactPerson.firstName + " " + contactPerson.getLastName();
+    }
 
     public String getDateTimeInSqlDateTimeFormat(LocalDateTime dateTime) {
         if (dateTime != null) {
@@ -93,5 +97,10 @@ public class ServiceOrder {
         long hours = ChronoUnit.HOURS.between(firstDateTime, secondDateTime);
         long minutesWithoutHours = minutes % 60;
         return hours + "h" + minutesWithoutHours + "m";
+    }
+
+    public void addNewTask(OrderTask orderTask) {
+        orderTaskList.add(orderTask);
+        orderTask.setServiceOrder(this);
     }
 }

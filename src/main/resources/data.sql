@@ -1,12 +1,12 @@
 INSERT INTO
-    system_user (id, first_name, last_name, email_address_hash, user_password_hash, user_type, token)
+    system_user (id, first_name, last_name, email_address, user_password_hash, user_type, token)
 VALUES
-    (1, 'Kamil', 'Zalwert', '4yi12y3', '31asdgayd7', 'CHIEF', '1u4yi12y3i31asdgayd786'),
-    (2, 'Jan', 'Pierwszy', '4yi12y3', '31asdgayd7', 'ELECTRICIAN', '1u4yi12y3i31asdgayd786'),
-    (3, 'Paweł', 'Drugi', '4yi12y3', '31asdgayd7', 'MECHANIC', '1u4yi12y3i31asdgayd786'),
-    (4, 'Mateusz', 'Parówka', '4yi12y3', '31asdgayd7#', 'MECHANIC', '1u4yi12y3i31asdgayd786'),
-    (5, 'Dominik', 'Kowalski', '4yi12y3', '31asdgayd7#', 'DIAGNOSTICIAN', '1u4yi12y3i31asdgayd786'),
-    (6, 'Krzysztof', 'Nowak', '4yi12y3', '31asdgayd7', 'TRAINEE', '1u4yi12y3i31asdgayd786');
+    (1, 'Kamil', 'Zalwert', 'kamilz@sprezynka.pl', '31asdgayd7', 'CHIEF', '1u4yi12y3i31asdgayd786'),
+    (2, 'Jan', 'Pierwszy', 'janp@sprezynka.pl', '31asdgayd7', 'ELECTRICIAN', '1u4yi12y3i31asdgayd786'),
+    (3, 'Paweł', 'Drugi', 'paweld@sprezynka.pl', '31asdgayd7', 'MECHANIC', '1u4yi12y3i31asdgayd786'),
+    (4, 'Mateusz', 'Parówka', 'mateuszp@sprezynka.pl', '31asdgayd7#', 'MECHANIC', '1u4yi12y3i31asdgayd786'),
+    (5, 'Dominik', 'Kowalski', 'dominikk@sprezynka.pl', '31asdgayd7#', 'DIAGNOSTICIAN', '1u4yi12y3i31asdgayd786'),
+    (6, 'Krzysztof', 'Nowak', 'krzysztofn@sprezynka.pl', '31asdgayd7', 'TRAINEE', '1u4yi12y3i31asdgayd786');
 
 INSERT INTO
     CONTACT_PERSON (ID, EMAIL_ADDRESS, FIRST_NAME, LAST_NAME, PHONE_NUMBER)

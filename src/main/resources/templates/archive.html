@@ -8,9 +8,12 @@
 
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
     <div class="col-md-10 p-lg-1 mx-auto my-1">
-        <h1 class="display-4 font-weight-normal">Wszystkie obecne zlecenia serwisowe</h1>
+        <h1 class="display-4 font-weight-normal">Zlecenia z najwyższym priorytetem</h1>
+        <p class="lead font-weight-normal">Lista przyjętych pojazdów, których termin oddania jest nabliższy, bądz co
+            gorsze przekroczony!</p>
+
         <br>
-        <form th:action="@{/list}" method="get">
+        <form th:action="@{/archive}" method="get">
             <input type="text" placeholder="Producent" th:value="${filters.producer}" name="producer">
             <input type="text" placeholder="Model" th:value="${filters.model}" name="model">
             <input type="text" placeholder="Numer Rejestracyjny" th:value="${filters.registrationNumber}" name="registrationNumber">
@@ -22,22 +25,22 @@
             <thead>
             <tr>
                 <th>
-                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=id'}">
+                    <a th:href="@{'/archive?page=' + ${currentPage} + '&sort=id'}">
                         Numer
                     </a>
                 </th>
                 <th>
-                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=producer'}">
+                    <a th:href="@{'/archive?page=' + ${currentPage} + '&sort=producer'}">
                         Producent
                     </a>
                 </th>
                 <th>
-                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=model'}">
+                    <a th:href="@{'/archive?page=' + ${currentPage} + '&sort=model'}">
                         Model
                     </a>
                 </th>
                 <th>
-                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=registrationNumber'}">
+                    <a th:href="@{'/archive?page=' + ${currentPage} + '&sort=registrationNumber'}">
                         Numer rejestracyjny
                     </a>
                 </th>
@@ -45,17 +48,17 @@
                         Numer VIN
                 </th>
                 <th>
-                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=engineCapacity'}">
+                    <a th:href="@{'/archive?page=' + ${currentPage} + '&sort=engineCapacity'}">
                         Pojemność silnika
                     </a>
                 </th>
                 <th>
-                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=fuelType'}">
+                    <a th:href="@{'/archive?page=' + ${currentPage} + '&sort=fuelType'}">
                         Rodzaj paliwa
                     </a>
                 </th>
                 <th>
-                    <a th:href="@{'/list?page=' + ${currentPage} + '&sort=deadlineDate'}">
+                    <a th:href="@{'/archive?page=' + ${currentPage} + '&sort=deadlineDate'}">
                         Termin zakończenia
                     </a>
                 </th>
@@ -94,7 +97,7 @@
             <nav aria-label="Pagination">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:each="pageNumber : ${pageNumbers}" >
-                        <a class="page-link" th:href="@{/list(page=${pageNumber},
+                        <a class="page-link" th:href="@{/archive(page=${pageNumber},
                                                                     sort=${sortOption},
                                                                     producer=${filters.producer},
                                                                     registrationNumber=${filters.registrationNumber},

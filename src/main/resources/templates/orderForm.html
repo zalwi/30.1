@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments :: head">
+</head>
+<body>
+<header th:include="fragments :: header" class="fixed-top">
+</header>
+
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-light">
+    <div class="col-md-10 p-lg-1 mx-auto my-1">
+        <div style="padding-left: 5%; padding-right: 5%; padding-top: 2%">
+            <form th:action="'/'+${actionLink}" th:object="${serviceOrder}" method="post" style="width: 50%">
+                <div>
+                    <h2 th:text="${actionDescription}">DODAJ AKCJĘ</h2>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="inputId">Numer</label>
+                    <input type="number" class="form-control" step="1" id="inputId"
+                           placeholder="Numer identyfikacyjny zlecenia - autonumeracja" name="id" required readonly
+                           th:value="${serviceOrder?.id}">
+                </div>
+                <div class="form-group">
+                    <label for="inputProducer">Producent pojazdu</label>
+                    <input type="text" class="form-control" id="inputProducer"
+                           placeholder="Podaj producenta" name="producer" required th:readonly="${isBlocked}"
+                           th:value="${serviceOrder?.producer}">
+                </div>
+                <div class="form-group">
+                    <label for="inputModel">Model pojazdu</label>
+                    <input type="text" class="form-control" id="inputModel"
+                           placeholder="Podaj model" name="model" required th:readonly="${isBlocked}"
+                           th:value="${serviceOrder?.model}">
+                </div>
+                <div class="form-group">
+                    <label for="inputRegistrationNumber">Numer rejestracyjny</label>
+                    <input type="text" class="form-control" id="inputRegistrationNumber"
+                           placeholder="Podaj numer rejestracyjny" name="registrationNumber" required th:readonly="${isBlocked}"
+                           th:value="${serviceOrder?.registrationNumber}">
+                </div>
+                <div class="form-group">
+                    <label for="inputVinNumber">Numer VIN</label>
+                    <input type="text" class="form-control" id="inputVinNumber"
+                           placeholder="Podaj numer VIN" name="vinNumber" required th:readonly="${isBlocked}"
+                           th:value="${serviceOrder?.vinNumber}">
+                </div>
+                <div class="form-group">
+                    <label for="inputFirstDateRegistration">Data pierwszej rejestracji</label>
+                    <input class="form-control" type="date" id="inputFirstDateRegistration" name="firstDateRegistration"
+                           required
+                           th:value="${serviceOrder?.firstDateRegistration}" th:readonly="${isBlocked}">
+                </div>
+                <div class="form-group">
+                    <label for="inputEngineCapacity">Pojemność silnika</label>
+                    <input type="number" class="form-control" id="inputEngineCapacity"
+                           placeholder="Pojemność w cm³" name="engineCapacity" required th:readonly="${isBlocked}"
+                           th:value="${serviceOrder?.engineCapacity}">
+                </div>
+                <div class="form-group">
+                    <label for="fuelType">Rodzaj paliwa</label>
+                    <select id="fuelType" class="form-control" name="fuelType" required th:readonly="${isBlocked}">
+                        <option value="" selected disabled>
+                            Wybierz kategorię..
+                        </option>
+                        <option
+                                th:if="${serviceOrder?.fuelType != null}"
+                                th:value="${serviceOrder?.fuelType}"
+                                th:text="'Poprzednia wartość: '+${serviceOrder?.fuelType?.description}"
+                                selected>
+                            Poprzednia wartość
+                        </option>
+                        <option th:if="${action} != 'Usuń' and ${action} !=  'Zakończ'" th:each="fuelType: ${T(pl.zalwi.global.model.FuelType).values()}"
+                                th:value="${fuelType}" th:text="${fuelType.getDescription()}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputCreationDate">Data utworzenia zlecenia</label>
+                    <input class="form-control" type="datetime-local" id="inputCreationDate" name="creationDate"
+                           required
+                           th:value="${serviceOrder?.creationDate}" th:readonly="${isBlocked}">
+                </div>
+                <div class="form-group">
+                    <label for="inputDeadlineDate">Termin wykonania</label>
+                    <input class="form-control" type="datetime-local" id="inputDeadlineDate" name="deadlineDate"
+                           required
+                           th:value="${serviceOrder?.deadlineDate}" th:readonly="${isBlocked}">
+                </div>
+                <div class="form-group">
+                    <label for="inputEndDate">Data wydania</label>
+                    <input class="form-control" type="datetime-local" id="inputEndDate" name="endDate"
+                           required
+                           th:value="${serviceOrder?.endDate}" readonly>
+                </div>
+                <div class="form-check" style="float: right">
+                    <input class="form-check-input" type="checkbox" id="finished" disabled th:checked="${serviceOrder?.finished}">
+                    <label class="form-check-label" for="finished">
+                        Wykonane
+                    </label>
+                </div>
+                <input id="person" name="person" type="number" hidden th:value="${personId}">
+<!--                <small th:if="${action} == 'Zakończ'" th:text="'Zadanie zostanie wykonane natychmiast i przeniesione do archiwum'" style="color: darkgoldenrod"></small>-->
+<!--                <small th:if="${action} == 'Usuń'" th:text="'UWAGA: Usunięcie danych bezpowrotne!'" style="color: red"></small>-->
+                <br>
+                <button type="submit" class="btn btn-primary" th:text="${action}">Typ akcji</button>
+            </form>
+        </div>
+</div>
+
+
+
+<footer th:include="fragments :: footer-links" class="container py-5">
+</footer>
+<footer th:include="fragments :: footer-fixed" class="black-transparent mt-auto py-1 fixed-bottom">
+</footer>
+<div th:include="fragments :: scripts">
+</div>
+</body>
+</html>

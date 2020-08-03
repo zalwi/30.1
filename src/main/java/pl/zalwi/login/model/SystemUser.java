@@ -17,11 +17,15 @@ public class SystemUser {
     Long id;
     String firstName;
     String lastName;
-    String emailAddressHash;
+    String emailAddress;
     String userPasswordHash;
 
     @Enumerated(EnumType.STRING)
     UserType userType;
 
     String token;
+
+    public String basicInfo(){
+        return firstName + " " + lastName + " (" + userType.getDescription() + ")";
+    }
 }

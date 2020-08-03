@@ -9,27 +9,38 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.zalwi.global.model.ContactPerson;
+import pl.zalwi.global.model.OrderTask;
 import pl.zalwi.global.model.ServiceOrder;
-import pl.zalwi.global.service.OrderService;
+import pl.zalwi.global.model.TaskStatus;
+import pl.zalwi.global.repository.SystemUserRepository;
+import pl.zalwi.global.service.ServiceOrderService;
+import pl.zalwi.global.service.SystemUserService;
+import pl.zalwi.login.model.SystemUser;
 import pl.zalwi.orders.model.OrdersFilters;
-import pl.zalwi.people.service.ContactPersonService;
+import pl.zalwi.global.service.ContactPersonService;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
 public class OrdersController {
 
-    OrderService orderService;
+    ServiceOrderService serviceOrderService;
     ContactPersonService contactPersonService;
+    SystemUserService systemUserService;
 
     @Autowired
-    public OrdersController(OrderService orderService, ContactPersonService contactPersonService) {
-        this.orderService = orderService;
+    public OrdersController(ServiceOrderService serviceOrderService, ContactPersonService contactPersonService, SystemUserService systemUserService) {
+        this.serviceOrderService = serviceOrderService;
         this.contactPersonService = contactPersonService;
+        this.systemUserService = systemUserService;
     }
+
+
     //    @GetMapping("/list")
 //    public String ordersList(Model model, @RequestParam(required = false) String token) {
 //        model.addAttribute("token", token);
@@ -51,7 +62,7 @@ public class OrdersController {
             model.addAttribute("sortOption", sort);
         }
         boolean finishedServiceOrders = false;
-        Page<ServiceOrder> orderPage = orderService.findAllForFiltersAndSort(ordersFilters, pageable, finishedServiceOrders);
+        Page<ServiceOrder> orderPage = serviceOrderService.findAllForFiltersAndSort(ordersFilters, pageable, finishedServiceOrders);
         int totalPages = orderPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
@@ -77,7 +88,7 @@ public class OrdersController {
             model.addAttribute("sortOption", sort);
         }
         boolean finishedServiceOrders = true;
-        Page<ServiceOrder> orderPage = orderService.findAllForFiltersAndSort(ordersFilters, pageable, finishedServiceOrders);
+        Page<ServiceOrder> orderPage = serviceOrderService.findAllForFiltersAndSort(ordersFilters, pageable, finishedServiceOrders);
         int totalPages = orderPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
@@ -105,7 +116,16 @@ public class OrdersController {
     public String addServiceOrder(ServiceOrder serviceOrder, @RequestParam(name = "person", required = true) Long personId) {
         serviceOrder.setContactPerson(contactPersonService.getContactPerson(personId));
         serviceOrder.setFinished(false);
-        orderService.addNewServiceOrder(serviceOrder);
+        serviceOrderService.addNewServiceOrder(serviceOrder);
         return "redirect:/list";
+    }
+
+    @GetMapping("/testtask")
+    public String testAddTask(){
+        Optional<SystemUser> systemUserById = systemUserService.getSystemUserById(4L);
+        Optional<ServiceOrder> serviceOrderById = serviceOrderService.getServiceOrderById(2L);
+        OrderTask orderTaskTest = new OrderTask(null, TaskStatus.INPROGRESS, LocalDateTime.now(), null, "Sprawdzić test", new BigDecimal("123"), systemUserById.get(), null);
+        serviceOrderService.addNewTaskToServiceOrder(1L, orderTaskTest);
+        return "redirect:/test";
     }
 }

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments :: head">
+</head>
+<body>
+<header th:include="fragments :: header" class="fixed-top">
+</header>
+
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+    <div class="col-md-10 p-lg-1 mx-auto my-1">
+        <h1 class="display-4 font-weight-normal">Lista zadań</h1>
+        <br>
+        <form th:action="@{/task}" method="get">
+            <select class="selectpicker" name="status">
+                <optgroup label="Bez filtrowania">
+                    <option value="">
+                        Wszystkie
+                    </option>
+                </optgroup>
+                <optgroup label="Filtrowanie po statusie">
+                    <option th:each="tStatus: ${T(pl.zalwi.global.model.TaskStatus).values()}"
+                            th:value="${tStatus}" th:text="${tStatus.getDescription()}"
+                            th:selected="${filter == tStatus}">
+                    </option>
+                </optgroup>
+            </select>
+            <input type="text" placeholder="Sortowanie" th:value="${sortOption}" name="sort" hidden>
+            <input type="submit" value="Filtruj" class="btn btn-primary"/>
+        </form>
+        <br>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    <a th:href="@{'/task?page=' + ${currentPage} + '&sort=id'}">
+                        Numer
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{'/task?page=' + ${currentPage} + '&sort=taskStatus'}">
+                        Status
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{'/task?page=' + ${currentPage} + '&sort=taskStartDate'}">
+                        Rozpoczęcie
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{'/task?page=' + ${currentPage} + '&sort=taskEndDate'}">
+                        Zakończenie
+                    </a>
+                </th>
+                <th>
+                    Opis
+                </th>
+                <th>
+                    <a th:href="@{'/task?page=' + ${currentPage} + '&sort=systemUser'}">
+                        Pracownik
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{'/task?page=' + ${currentPage} + '&sort=serviceOrder'}">
+                        Dotyczy
+                    </a>
+                </th>
+                <th>
+                    Akcje
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="task: ${taskList}">
+                <td th:text="${task.id}"></td>
+                <td th:text="${task.taskStatus.description}"></td>
+                <td th:text="${task.taskStartDate}"></td>
+                <td th:text="${task.taskEndDate}"></td>
+                <td>Kliknij po więcej szczegółów</td>
+                <td th:text="${task.systemUser.basicInfo()}"></td>
+                <td th:text="${task.serviceOrder.basicInfo()}"></td>
+                <td text="linki akcji"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:if="${taskList.size()} == 0" th:text="'Brak wyników!'" style="color: darkgrey"></p>
+    <div class="row" th:fragment="pagination">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <nav aria-label="Pagination">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                        <a class="page-link" th:href="@{/task(page=${pageNumber},
+                                                                    sort=${sortOption},
+                                                                    status=${filter})}"
+                           th:text=${pageNumber}>1</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+
+<footer th:include="fragments :: footer-links" class="container py-5">
+</footer>
+<footer th:include="fragments :: footer-fixed" class="black-transparent mt-auto py-1 fixed-bottom">
+</footer>
+<div th:include="fragments :: scripts">
+</div>
+</body>
+</html>
