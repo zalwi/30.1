@@ -45,7 +45,7 @@ public class ServiceOrder {
     @OneToOne
     ContactPerson contactPerson;
 
-    @OneToMany(mappedBy = "serviceOrder", cascade = CascadeType.PERSIST) 
+    @OneToMany(mappedBy = "serviceOrder", cascade = CascadeType.ALL)
     List<OrderTask> orderTaskList;
 
     private Boolean finished;
