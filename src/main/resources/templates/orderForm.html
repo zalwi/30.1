@@ -100,7 +100,7 @@
                 </div>
                 <input id="person" name="person" type="number" hidden th:value="${personId}">
 <!--                <small th:if="${action} == 'Zakończ'" th:text="'Zadanie zostanie wykonane natychmiast i przeniesione do archiwum'" style="color: darkgoldenrod"></small>-->
-<!--                <small th:if="${action} == 'Usuń'" th:text="'UWAGA: Usunięcie danych bezpowrotne!'" style="color: red"></small>-->
+                <small th:if="${action} == 'Usuń'" th:text="'UWAGA: Usunięcie danych bezpowrotne!'" style="color: red"></small>
                 <br>
                 <button type="submit" class="btn btn-primary" th:text="${action}">Typ akcji</button>
             </form>

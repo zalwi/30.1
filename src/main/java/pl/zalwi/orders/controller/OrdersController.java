@@ -112,6 +112,38 @@ public class OrdersController {
         return "orderForm";
     }
 
+    @GetMapping("/updateServiceOrder")
+    public String updateServiceOrder(@RequestParam(name = "id") Long id, Model model) {
+        Optional<ServiceOrder> optionalServiceOrderById = serviceOrderService.getServiceOrderById(id);
+        if (optionalServiceOrderById.isPresent()) {
+            model.addAttribute("serviceOrder", optionalServiceOrderById.get());
+        } else {
+            return "err";
+        }
+        model.addAttribute("actionDescription", "Modyfikowanie zlecenia");
+        model.addAttribute("action", "Modyfikuj");
+        model.addAttribute("actionLink", "modifyServiceOrder");
+        model.addAttribute("isBlocked", false);
+        model.addAttribute("isBlockedEndDate", false);
+        return "orderForm";
+    }
+
+    @GetMapping("/removeServiceOrder")
+    public String removeServiceOrder(@RequestParam(name = "id") Long id, Model model) {
+        Optional<ServiceOrder> optionalServiceOrderById = serviceOrderService.getServiceOrderById(id);
+        if (optionalServiceOrderById.isPresent()) {
+            model.addAttribute("serviceOrder", optionalServiceOrderById.get());
+        } else {
+            return "err";
+        }
+        model.addAttribute("actionDescription", "Usuwanie zlecenia");
+        model.addAttribute("action", "Usuń");
+        model.addAttribute("actionLink", "deleteServiceOrder");
+        model.addAttribute("isBlocked", true);
+        model.addAttribute("isBlockedEndDate", true);
+        return "orderForm";
+    }
+
     @PostMapping("/addServiceOrder")
     public String addServiceOrder(ServiceOrder serviceOrder, @RequestParam(name = "person", required = true) Long personId) {
         serviceOrder.setContactPerson(contactPersonService.getContactPerson(personId));
@@ -119,6 +151,20 @@ public class OrdersController {
         serviceOrderService.addNewServiceOrder(serviceOrder);
         return "redirect:/list";
     }
+
+    @PostMapping("/modifyServiceOrder")
+    public String modifyServiceOrder(ServiceOrder serviceOrder) {
+        serviceOrderService.modifyServiceOrder(serviceOrder);
+        return "redirect:/list";
+    }
+
+    @PostMapping("/deleteServiceOrder")
+    public String deleteTask(@RequestParam Long id) {
+        serviceOrderService.deleteServiceOrder(id);
+        return "redirect:/list";
+    }
+
+
 
     @GetMapping("/testtask")
     public String testAddTask(){

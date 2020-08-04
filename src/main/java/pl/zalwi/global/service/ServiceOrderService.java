@@ -78,13 +78,38 @@ public class ServiceOrderService {
         if(serviceOrderById.isPresent())
         {
             tmpServiceOrder = serviceOrderById.get();
-            tmpServiceOrder.addNewTask(orderTask);
+            tmpServiceOrder.addNewTaskToList(orderTask);
             orderTaskRepository.save(orderTask);
             orderRepository.save(tmpServiceOrder);
         }
     }
 
+
+
     public Optional<ServiceOrder> getServiceOrderById(Long id) {
         return orderRepository.findById(id);
+    }
+
+    public void modifyServiceOrder(ServiceOrder serviceOrderWithNewValues) {
+        Optional<ServiceOrder> OptionalServiceOrder = orderRepository.findById(serviceOrderWithNewValues.getId());
+        ServiceOrder modifiedServiceOrder;
+        if(OptionalServiceOrder.isPresent())
+        {
+            modifiedServiceOrder = OptionalServiceOrder.get();
+            modifiedServiceOrder.setProducer(               serviceOrderWithNewValues.getProducer());
+            modifiedServiceOrder.setModel(                  serviceOrderWithNewValues.getModel());
+            modifiedServiceOrder.setRegistrationNumber(     serviceOrderWithNewValues.getRegistrationNumber());
+            modifiedServiceOrder.setVinNumber(              serviceOrderWithNewValues.getVinNumber());
+            modifiedServiceOrder.setFirstDateRegistration(  serviceOrderWithNewValues.getFirstDateRegistration());
+            modifiedServiceOrder.setEngineCapacity(         serviceOrderWithNewValues.getEngineCapacity());
+            modifiedServiceOrder.setFuelType(               serviceOrderWithNewValues.getFuelType());
+            modifiedServiceOrder.setCreationDate(           serviceOrderWithNewValues.getCreationDate());
+            modifiedServiceOrder.setDeadlineDate(           serviceOrderWithNewValues.getDeadlineDate());
+            orderRepository.save(modifiedServiceOrder);
+        }
+    }
+
+    public void deleteServiceOrder(Long id) {
+        orderRepository.deleteById(id);
     }
 }

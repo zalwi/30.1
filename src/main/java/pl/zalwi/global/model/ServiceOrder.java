@@ -45,7 +45,7 @@ public class ServiceOrder {
     @OneToOne
     ContactPerson contactPerson;
 
-    @OneToMany(mappedBy = "serviceOrder", cascade = CascadeType.PERSIST) // (mappedBy = "owner", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "serviceOrder", cascade = CascadeType.PERSIST) 
     List<OrderTask> orderTaskList;
 
     private Boolean finished;
@@ -99,8 +99,44 @@ public class ServiceOrder {
         return hours + "h" + minutesWithoutHours + "m";
     }
 
-    public void addNewTask(OrderTask orderTask) {
+    public void addNewTaskToList(OrderTask orderTask) {
         orderTaskList.add(orderTask);
         orderTask.setServiceOrder(this);
+    }
+
+    private int[] countTasks(){
+        int newTasks = 0;
+        int inProgressTasks = 0;
+        int doneTasks = 0;
+        int allTasks = 0;
+        if(orderTaskList.isEmpty()){
+            allTasks = 0;
+        }else {
+            allTasks = orderTaskList.size();
+            for(OrderTask task: orderTaskList){
+                switch(task.getTaskStatus()){
+                    case NEW         -> {newTasks++;}
+                    case INPROGRESS  -> {inProgressTasks++;}
+                    case DONE        -> {doneTasks++;}
+                }
+            }
+        }
+                        /* [0]          [1]             [2]        [3] */
+        return new int[]{newTasks, inProgressTasks, doneTasks, allTasks};
+    }
+
+    public String countAllTasks(){
+        int[] counters = countTasks();
+        return "Wykonane " + counters[2] + "/" + counters[3];
+    }
+
+    public String countNewTasks(){
+        int[] counters = countTasks();
+        return "Oczekujące " + counters[0];
+    }
+
+    public String countInPogressTasks(){
+        int[] counters = countTasks();
+        return "W trakcie " + counters[1];
     }
 }

@@ -7,10 +7,9 @@
 </header>
 
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-    <div class="col-md-10 p-lg-1 mx-auto my-1">
-        <h1 class="display-4 font-weight-normal">Zlecenia z najwyższym priorytetem</h1>
-        <p class="lead font-weight-normal">Lista przyjętych pojazdów, których termin oddania jest nabliższy, bądz co
-            gorsze przekroczony!</p>
+    <div class="col-md-20 p-lg-1 mx-auto my-1">
+        <h1 class="display-4 font-weight-normal">Archiwum</h1>
+        <p class="lead font-weight-normal">Zakończone zlecenia serwisowe</p>
 
         <br>
         <form th:action="@{/archive}" method="get">
@@ -84,7 +83,11 @@
                 <td th:text="${order.fuelType.description}"></td>
                 <td th:text="${order.getDateTimeInSqlDateTimeFormat(order.deadlineDate)}"></td>
                 <td th:text="|${order.contactPerson.firstName} ${order.contactPerson.lastName}|"></td>
-                <td text="link do zadań"></td>
+                <td>
+                    <small th:text="${order.countAllTasks()}"></small><br>
+                    <small th:text="${order.countNewTasks()}"></small><br>
+                    <small th:text="${order.countInPogressTasks()}"></small><br>
+                </td>
                 <td text="linki akcji"></td>
             </tr>
             </tbody>
